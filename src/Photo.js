@@ -5,63 +5,69 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autoBind from 'react-autobind';
-import ReactNative, { View, Animated, PanResponder, Easing } from 'react-native';
+import ReactNative, { View, Animated, PanResponder, Easing, findNodeHandle } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import FlexImage from 'react-native-flex-image';
 
 import getDistance from './helpers/getDistance';
 import getScale from './helpers/getScale';
 import measureNode from './helpers/measureNode';
-
-import type { Measurement } from './Measurement-type';
-import type { Touch } from './Touch-type';
+// import type { Measurement } from './Measurement-type';
+// import type { Touch } from './Touch-type';
 
 const RESTORE_ANIMATION_DURATION = 200;
 
-type Event = {
-  nativeEvent: {
-    touches: Array<Touch>,
-  },
-};
+// type Event = {
+//   nativeEvent: {
+//     touches: Array<Touch>,
+//   },
+// };
 
-type GestureState = {
-  stateID: string,
-  dx: number,
-  dy: number,
-};
+// type GestureState = {
+//   stateID: string,
+//   dx: number,
+//   dy: number,
+// };
 
-type Photo = {
-  name: string,
-  avatar: {
-    uri: string,
-  },
-  photo: { uri: string },
-};
+// type Photo = {
+//   name: string,
+//   avatar: {
+//     uri: string,
+//   },
+//   photo: { uri: string },
+// };
 
-type Props = {
-  data: Photo,
-  isDragging: boolean,
-  onGestureStart: ({ photoURI: string, measurement: Measurement }) => void,
-  onGestureRelease: () => void,
-};
 
-type Context = {
-  gesturePosition: Animated.ValueXY,
-  scaleValue: Animated.Value,
-  getScrollPosition: () => number,
-};
+// type Props = {
+//   data: Photo,
+//   isDragging: boolean,
+//   onGestureStart: ({ photoURI: string, measurement: Measurement }) => void,
+//   onGestureRelease: () => void,
+// };
+
+// type Context = {
+//   gesturePosition: Animated.ValueXY,
+//   scaleValue: Animated.Value,
+//   getScrollPosition: () => number,
+// };
 
 export default class PhotoComponent extends Component {
-  props: Props;
-  context: Context;
-  _parent: ?Object;
-  _photoComponent: ?Object;
-  _gestureHandler: Object;
-  _initialTouches: Array<Object>;
-  _selectedPhotoMeasurement: Measurement;
-  _gestureInProgress: ?string;
+  // props: Props;
 
-  _opacity: Animated.Value;
+  context = {
+    gesturePosition: new Animated.ValueXY(),
+    scaleValue: new Animated.Value(),
+    getScrollPosition: () => null,
+  }
+
+  // _parent: ?Object;
+  // _photoComponent: ?Object;
+  // _gestureHandler: Object;
+  // _initialTouches: Array<Object>;
+  // _selectedPhotoMeasurement: Measurement;
+  // _gestureInProgress: ?string;
+
+  // _opacity: Animated.Value;
 
   static contextTypes = {
     gesturePosition: PropTypes.object,
@@ -104,11 +110,11 @@ export default class PhotoComponent extends Component {
   _generatePanHandlers() {
     this._gestureHandler = PanResponder.create({
       onStartShouldSetResponderCapture: () => true,
-      onStartShouldSetPanResponderCapture: (event: Event) => {
+      onStartShouldSetPanResponderCapture: (event) => {
         return event.nativeEvent.touches.length === 2;
       },
       onMoveShouldSetResponderCapture: () => true,
-      onMoveShouldSetPanResponderCapture: (event: Event) => {
+      onMoveShouldSetPanResponderCapture: (event) => {
         return event.nativeEvent.touches.length === 2;
       },
       onPanResponderGrant: this._startGesture,
@@ -123,7 +129,7 @@ export default class PhotoComponent extends Component {
     });
   }
 
-  async _startGesture(event: Event, gestureState: GestureState) {
+  async _startGesture(event, gestureState) {
     // Sometimes gesture start happens two or more times rapidly.
     if (this._gestureInProgress) {
       return;
@@ -159,7 +165,7 @@ export default class PhotoComponent extends Component {
     }).start();
   }
 
-  _onGestureMove(event: Event, gestureState: GestureState) {
+  _onGestureMove(event, gestureState) {
     let { touches } = event.nativeEvent;
     if (!this._gestureInProgress) {
       return;
@@ -183,7 +189,7 @@ export default class PhotoComponent extends Component {
     scaleValue.setValue(newScale);
   }
 
-  _onGestureRelease(event, gestureState: GestureState) {
+  _onGestureRelease(event, gestureState) {
     if (this._gestureInProgress !== gestureState.stateID) {
       return;
     }
@@ -199,19 +205,16 @@ export default class PhotoComponent extends Component {
         toValue: 0,
         duration: RESTORE_ANIMATION_DURATION,
         easing: Easing.ease,
-        // useNativeDriver: true,
       }),
       Animated.timing(gesturePosition.y, {
         toValue: 0,
         duration: RESTORE_ANIMATION_DURATION,
         easing: Easing.ease,
-        // useNativeDriver: true,
       }),
       Animated.timing(scaleValue, {
         toValue: 1,
         duration: RESTORE_ANIMATION_DURATION,
         easing: Easing.ease,
-        // useNativeDriver: true,
       }),
     ]).start(() => {
       gesturePosition.setOffset({

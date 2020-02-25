@@ -1,28 +1,33 @@
+/* eslint-disable prettier/prettier */
 // @flow
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Animated, StyleSheet } from 'react-native';
 
-import type { Measurement } from './Measurement-type';
+// import type { Measurement } from './Measurement-type';
 
-type Props = {
-  selectedPhoto: { photoURI: string; measurement: Measurement };
-};
+// type Props = {
+//   selectedPhoto: { photoURI: string; measurement: Measurement };
+// };
 
-type State = {
-  isLoaded: boolean;
-};
+// type State = {
+//   isLoaded: boolean;
+// };
 
-type Context = {
-  gesturePosition: Animated.ValueXY;
-  scaleValue: Animated.Value;
-};
+// const Context = {
+//   gesturePosition: new Animated.ValueXY,
+//   scaleValue: new Animated.Value,
+// };
 
 export default class SelectedPhoto extends Component {
-  props: Props;
-  state: State = { isLoaded: false };
-  context: Context;
+  // props: Props;
+  // state: State = { isLoaded: false };
+  state = { isLoaded: false };
+  context = {
+    gesturePosition: new Animated.ValueXY(),
+    scaleValue: new Animated.Value(),
+  };
 
   static contextTypes = {
     gesturePosition: PropTypes.object,

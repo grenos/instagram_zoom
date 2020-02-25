@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-// @flow
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, ScrollView, Animated, FlatList, Text } from 'react-native';
@@ -7,7 +7,7 @@ import { StyleSheet, View, ScrollView, Animated, FlatList, Text } from 'react-na
 import Photo from './src/Photo';
 import SelectedPhoto from './src/SelectedPhoto';
 
-import { Measurement } from './src/Measurement-type';
+// import { Measurement } from './src/Measurement-type';
 
 
 
@@ -66,13 +66,13 @@ let photos = [
   },
 ];
 
-type SelectedPhotoType = { photoURI: string; measurement: Measurement };
+// type SelectedPhotoType = { photoURI: string; measurement: Measurement };
 
-type State = {
-  selectedPhoto?: SelectedPhotoType;
-  isDragging: boolean;
-  isBottom: boolean;
-};
+// type State = {
+//   selectedPhoto?: SelectedPhotoType;
+//   isDragging: boolean;
+//   isBottom: boolean;
+// };
 
 
 const MARGIN_FROM_BOTTOM = 200;
@@ -80,10 +80,10 @@ const MARGIN_FROM_BOTTOM = 200;
 
 export default class App extends React.Component {
 
-  state: State;
-  _scrollValue: Animated.Value;
-  _scaleValue: Animated.Value;
-  _gesturePosition: Animated.ValueXY;
+  // state: State;
+  // _scrollValue: Animated.Value;
+  // _scaleValue: Animated.Value;
+  // _gesturePosition: Animated.ValueXY;
 
   constructor() {
     super(...arguments);
@@ -98,6 +98,11 @@ export default class App extends React.Component {
     };
   }
 
+  static childContextTypes = {
+    gesturePosition: PropTypes.object,
+    getScrollPosition: PropTypes.func,
+    scaleValue: PropTypes.object,
+  };
 
   getChildContext() {
     return {
@@ -139,7 +144,7 @@ export default class App extends React.Component {
             Animated.event([
               { nativeEvent: { contentOffset: { y: this._scrollValue } } },
             ]);
-          }}
+          }} z
           scrollEnabled={!isDragging}
         >
           {photos.map((photo, key) => {
@@ -148,7 +153,7 @@ export default class App extends React.Component {
                 data={photo}
                 key={key}
                 isDragging={isDragging}
-                onGestureStart={(selectedPhoto: SelectedPhotoType) => {
+                onGestureStart={(selectedPhoto) => {
                   this.setState({
                     selectedPhoto,
                     isDragging: true,

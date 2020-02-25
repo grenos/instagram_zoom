@@ -1,10 +1,8 @@
+/* eslint-disable prettier/prettier */
 // @flow
 
 const SCALE_MULTIPLIER = 1.2;
 
-export default function getScale(
-  currentDistance: number,
-  initialDistance: number
-) {
+export default function getScale(currentDistance, initialDistance) {
   return currentDistance / initialDistance * SCALE_MULTIPLIER;
 }
