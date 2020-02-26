@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ScrollView, Animated } from 'react-native';
+import { StyleSheet, View, ScrollView, Animated, Text } from 'react-native';
 
 import Photo from './src/Photo';
 import SelectedPhoto from './src/SelectedPhoto';
@@ -123,32 +123,57 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
+
         <ScrollView
-          scrollEventThrottle={16}
           onScroll={onScroll}
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={false}
           scrollEnabled={!isDragging}
         >
-          {photos.map((photo, key) => {
-            return (
-              <Photo
-                data={photo}
-                key={key}
-                isDragging={isDragging}
-                onGestureStart={(selectedPhoto) => {
-                  this.setState({
-                    selectedPhoto,
-                    isDragging: true,
-                  });
-                }}
-                onGestureRelease={() => this.setState({ isDragging: false })}
-              />
-            );
-          })}
+
+          <Text onLayout={(event) => {
+            var { height } = event.nativeEvent.layout;
+            this.headerHeight = height;
+          }}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum velit dolor iusto quisquam minus eius est accusamus! Animi ad laudantium illo architecto eaque repellendus deleniti nulla asperiores! Vitae, non harum.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed nostrum accusamus dignissimos iure distinctio hic dolores aut, in repellendus, laborum debitis neque at! Aspernatur tenetur suscipit ut rerum explicabo culpa?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ipsum numquam, quod maxime esse magnam! Neque distinctio ipsum aliquid corrupti illum dolor eos nulla velit placeat, quidem culpa animi numquam.
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore earum, tenetur, expedita asperiores nam porro officia veniam nisi sit alias nulla? Commodi adipisci architecto aperiam nam dicta repellat blanditiis provident?
+          </Text>
+
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            nestedScrollEnabled
+            scrollEventThrottle={16}
+            onScroll={onScroll}
+            scrollEnabled={!isDragging}
+          >
+            {photos.map((photo, key) => {
+              return (
+                <Photo
+                  data={photo}
+                  key={key}
+                  isDragging={isDragging}
+                  headerHeight={this.headerHeight}
+                  onGestureStart={(selectedPhoto) => {
+                    this.setState({
+                      selectedPhoto,
+                      isDragging: true,
+                    });
+                  }}
+                  onGestureRelease={() => this.setState({ isDragging: false })}
+                />
+              );
+            })}
+          </ScrollView>
+
         </ScrollView>
+
         {isDragging ? (
           <SelectedPhoto
             key={selectedPhoto ? selectedPhoto.photoURI : ''}
             selectedPhoto={selectedPhoto}
+            headerHeight={this.headerHeight}
           />
         ) : null}
       </View>

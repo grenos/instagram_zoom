@@ -27,6 +27,8 @@ export default class SelectedPhoto extends Component {
       scale: scaleValue,
     });
 
+    console.log(gesturePosition.getTranslateTransform());
+
     let imageStyle = [
       {
         position: 'absolute',

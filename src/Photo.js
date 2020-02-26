@@ -91,6 +91,8 @@ export default class PhotoComponent extends Component {
 
     let selectedPhotoMeasurement = await this._measureSelectedPhoto();
     this._selectedPhotoMeasurement = selectedPhotoMeasurement;
+
+
     onGestureStart({
       photoURI: data.photo.uri,
       measurement: selectedPhotoMeasurement,
@@ -194,7 +196,7 @@ export default class PhotoComponent extends Component {
 
     return {
       x: photoMeasurement.x,
-      y: parentMeasurement.y + photoMeasurement.y,
+      y: parentMeasurement.y + photoMeasurement.y + this.props.headerHeight,
       w: photoMeasurement.w,
       h: photoMeasurement.h,
     };
