@@ -1,12 +1,13 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 /* global requestAnimationFrame */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autoBind from 'react-autobind';
-import ReactNative, { View, Animated, PanResponder, Easing } from 'react-native';
+import ReactNative, { View, Animated, PanResponder, Easing, Image } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import FlexImage from 'react-native-flex-image';
+
 
 import { getDistance, getScale, measureNode } from './InstaZoomHelpers';
 
@@ -48,7 +49,7 @@ export default class PhotoComponent extends Component {
           {...this._gestureHandler.panHandlers}
           style={{ opacity: this._opacity }}
         >
-          <FlexImage source={{ uri: data.photo.uri }} />
+          <Image source={{ uri: data.photo.uri }} style={{ width: '100%', height: 260 }} />
         </Animated.View>
       </View>
     );
