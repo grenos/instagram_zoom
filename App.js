@@ -136,10 +136,6 @@ export default class App extends React.Component {
           this.fakeAPI();
         });
       }
-      Animated.event([
-        { nativeEvent: { contentOffset: { y: this._scrollValue } } },
-      ]);
-
 
       return Animated.event([
         { nativeEvent: { contentOffset: { y: this._scrollValue } } },
