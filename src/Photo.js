@@ -1,73 +1,19 @@
 /* eslint-disable prettier/prettier */
-// @flow
 /* global requestAnimationFrame */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autoBind from 'react-autobind';
-import ReactNative, { View, Animated, PanResponder, Easing, findNodeHandle } from 'react-native';
+import ReactNative, { View, Animated, PanResponder, Easing } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import FlexImage from 'react-native-flex-image';
 
-import getDistance from './helpers/getDistance';
-import getScale from './helpers/getScale';
-import measureNode from './helpers/measureNode';
-// import type { Measurement } from './Measurement-type';
-// import type { Touch } from './Touch-type';
+import { getDistance, getScale, measureNode } from './InstaZoomHelpers';
+
 
 const RESTORE_ANIMATION_DURATION = 200;
 
-// type Event = {
-//   nativeEvent: {
-//     touches: Array<Touch>,
-//   },
-// };
-
-// type GestureState = {
-//   stateID: string,
-//   dx: number,
-//   dy: number,
-// };
-
-// type Photo = {
-//   name: string,
-//   avatar: {
-//     uri: string,
-//   },
-//   photo: { uri: string },
-// };
-
-
-// type Props = {
-//   data: Photo,
-//   isDragging: boolean,
-//   onGestureStart: ({ photoURI: string, measurement: Measurement }) => void,
-//   onGestureRelease: () => void,
-// };
-
-// type Context = {
-//   gesturePosition: Animated.ValueXY,
-//   scaleValue: Animated.Value,
-//   getScrollPosition: () => number,
-// };
-
 export default class PhotoComponent extends Component {
-  // props: Props;
-
-  context = {
-    gesturePosition: new Animated.ValueXY(),
-    scaleValue: new Animated.Value(),
-    getScrollPosition: () => null,
-  }
-
-  // _parent: ?Object;
-  // _photoComponent: ?Object;
-  // _gestureHandler: Object;
-  // _initialTouches: Array<Object>;
-  // _selectedPhotoMeasurement: Measurement;
-  // _gestureInProgress: ?string;
-
-  // _opacity: Animated.Value;
 
   static contextTypes = {
     gesturePosition: PropTypes.object,
@@ -88,7 +34,7 @@ export default class PhotoComponent extends Component {
     let { data } = this.props;
 
     return (
-      <View ref={parentNode => (this._parent = parentNode)}>
+      <View ref={(parentNode) => (this._parent = parentNode)}>
         <View>
           <ListItem
             roundAvatar
@@ -98,9 +44,10 @@ export default class PhotoComponent extends Component {
           />
         </View>
         <Animated.View
-          ref={node => (this._photoComponent = node)}
+          ref={(node) => (this._photoComponent = node)}
           {...this._gestureHandler.panHandlers}
-          style={{ opacity: this._opacity }}>
+          style={{ opacity: this._opacity }}
+        >
           <FlexImage source={{ uri: data.photo.uri }} />
         </Animated.View>
       </View>
@@ -205,16 +152,19 @@ export default class PhotoComponent extends Component {
         toValue: 0,
         duration: RESTORE_ANIMATION_DURATION,
         easing: Easing.ease,
+        // useNativeDriver: true,
       }),
       Animated.timing(gesturePosition.y, {
         toValue: 0,
         duration: RESTORE_ANIMATION_DURATION,
         easing: Easing.ease,
+        // useNativeDriver: true,
       }),
       Animated.timing(scaleValue, {
         toValue: 1,
         duration: RESTORE_ANIMATION_DURATION,
         easing: Easing.ease,
+        // useNativeDriver: true,
       }),
     ]).start(() => {
       gesturePosition.setOffset({

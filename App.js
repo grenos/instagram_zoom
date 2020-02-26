@@ -1,16 +1,13 @@
 /* eslint-disable prettier/prettier */
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ScrollView, Animated, FlatList, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Animated } from 'react-native';
 
 import Photo from './src/Photo';
 import SelectedPhoto from './src/SelectedPhoto';
 
-// import { Measurement } from './src/Measurement-type';
 
-
-
+const MARGIN_FROM_BOTTOM = 200;
 let photos = [
   {
     name: 'Audy Tanudjaja',
@@ -57,7 +54,7 @@ let photos = [
   {
     name: 'Other',
     avatar: {
-      uri: 'https://www.mautic.org/media/images/default_avatar.png',
+      uri: `https://www.mautic.org/media/images/default_avatar.png`,
     },
     photo: {
       uri:
@@ -66,24 +63,7 @@ let photos = [
   },
 ];
 
-// type SelectedPhotoType = { photoURI: string; measurement: Measurement };
-
-// type State = {
-//   selectedPhoto?: SelectedPhotoType;
-//   isDragging: boolean;
-//   isBottom: boolean;
-// };
-
-
-const MARGIN_FROM_BOTTOM = 200;
-
-
 export default class App extends React.Component {
-
-  // state: State;
-  // _scrollValue: Animated.Value;
-  // _scaleValue: Animated.Value;
-  // _gesturePosition: Animated.ValueXY;
 
   constructor() {
     super(...arguments);
@@ -91,10 +71,8 @@ export default class App extends React.Component {
     this._scrollValue = new Animated.Value(0);
     this._scaleValue = new Animated.Value(1);
     this._gesturePosition = new Animated.ValueXY();
-
     this.state = {
       isDragging: false,
-      isBottom: false,
     };
   }
 
@@ -113,6 +91,7 @@ export default class App extends React.Component {
       },
     };
   }
+
 
   isCloseToBottom({ layoutMeasurement, contentOffset, contentSize }) {
     return layoutMeasurement.height + contentOffset.y >= contentSize.height - MARGIN_FROM_BOTTOM;
@@ -142,11 +121,10 @@ export default class App extends React.Component {
       ])(event);
     };
 
-
     return (
       <View style={styles.container}>
         <ScrollView
-          scrollEventThrottle={1000}
+          scrollEventThrottle={16}
           onScroll={onScroll}
           scrollEnabled={!isDragging}
         >
