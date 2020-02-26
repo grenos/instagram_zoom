@@ -129,22 +129,29 @@ export default class App extends React.Component {
   render() {
     let { isDragging, selectedPhoto } = this.state;
 
+    let onScroll = (event) => {
+
+      if (this.isCloseToBottom(event.nativeEvent) && !this.state.isBottom) {
+        this.setState({ isBottom: true }, () => {
+          console.log(this.state.isBottom, 'STATE IS TRUE');
+          this.fakeAPI();
+        });
+      }
+      Animated.event([
+        { nativeEvent: { contentOffset: { y: this._scrollValue } } },
+      ]);
+
+
+      return Animated.event([
+        { nativeEvent: { contentOffset: { y: this._scrollValue } } },
+      ])(event);
+    }
 
     return (
       <View style={styles.container}>
         <ScrollView
           scrollEventThrottle={1000}
-          onScroll={({ nativeEvent }) => {
-            if (this.isCloseToBottom(nativeEvent) && !this.state.isBottom) {
-              this.setState({ isBottom: true }, () => {
-                console.log(this.state.isBottom, 'STATE IS TRUE');
-                this.fakeAPI();
-              });
-            }
-            Animated.event([
-              { nativeEvent: { contentOffset: { y: this._scrollValue } } },
-            ]);
-          }} z
+          onScroll={onScroll}
           scrollEnabled={!isDragging}
         >
           {photos.map((photo, key) => {
