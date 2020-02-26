@@ -186,7 +186,7 @@ export default class PhotoComponent extends Component {
     let currentDistance = getDistance(touches);
     let initialDistance = getDistance(this._initialTouches);
     let newScale = getScale(currentDistance, initialDistance);
-    scaleValue.setValue(newScale < 1 ? 1 : newScale > 4.5 ? 4.5 : newScale);
+    scaleValue.setValue(newScale < 1 ? 1 : newScale);
   }
 
   _onGestureRelease(event, gestureState) {

@@ -130,7 +130,6 @@ export default class App extends React.Component {
     let { isDragging, selectedPhoto } = this.state;
 
     let onScroll = (event) => {
-
       if (this.isCloseToBottom(event.nativeEvent) && !this.state.isBottom) {
         this.setState({ isBottom: true }, () => {
           console.log(this.state.isBottom, 'STATE IS TRUE');
@@ -145,7 +144,8 @@ export default class App extends React.Component {
       return Animated.event([
         { nativeEvent: { contentOffset: { y: this._scrollValue } } },
       ])(event);
-    }
+    };
+
 
     return (
       <View style={styles.container}>
